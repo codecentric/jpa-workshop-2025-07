@@ -26,17 +26,16 @@ class MessageLoaderWithRelationsJdbcClientTest {
 	}
 
 	@Test
-	@Disabled("TODO")
 	void loadsSingleMessage() {
 		client.sql("INSERT INTO users VALUES (42, 'user1')").update();
 		client.sql("INSERT INTO messages VALUES (1, 42, 'to1', 'content1')").update();
+		client.sql("INSERT INTO messages VALUES (2, 42, 'to1', 'content1')").update();
 		final Message loadedMessage = underTest.loadMessage(1);
 		assertThat(loadedMessage).usingRecursiveComparison()
 			.isEqualTo(new Message(1, new User(42, "user1"), "to1", "content1"));
 	}
 
 	@Test
-	@Disabled("TODO")
 	void loadsAllMessages() {
 		client.sql("INSERT INTO users VALUES (42, 'user1')").update();
 		client.sql("INSERT INTO users VALUES (43, 'user2')").update();

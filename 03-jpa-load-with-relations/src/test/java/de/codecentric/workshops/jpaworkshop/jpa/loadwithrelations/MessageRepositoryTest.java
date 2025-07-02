@@ -17,7 +17,7 @@ import org.springframework.jdbc.core.simple.JdbcClient;
 class MessageRepositoryTest {
 	@Autowired
 	JdbcClient jdbcClient;
-//	@Autowired
+	@Autowired
 	MessageRepository underTest;
 
 	@BeforeEach
@@ -32,17 +32,15 @@ class MessageRepositoryTest {
 	}
 
 	@Test
-	@Disabled("TODO")
 	void loadsSingleMessage() {
-		final Message loadedMessage = null; // underTest.???(???);
+		final Message loadedMessage = underTest.findById(1L).get();
 		assertThat(loadedMessage).usingRecursiveComparison()
 			.isEqualTo(new Message(1, new User(42, "user1", UserLevel.USER), "to1", "content one"));
 	}
 
 	@Test
-	@Disabled("TODO")
 	void loadsAllMessages() {
-		final List<Message> messages = Collections.emptyList(); // underTest.???(???)
+		final List<Message> messages = underTest.findAll();
 		Assertions.assertThat(messages).hasSize(3);
 		assertThat(messages.get(0)).usingRecursiveComparison()
 			.isEqualTo(new Message(1, new User(42, "user1", UserLevel.USER), "to1", "content one"));
@@ -53,54 +51,53 @@ class MessageRepositoryTest {
 	}
 
 	@Test
-	@Disabled("TODO")
 	void findsMessageBySender() {
-		final List<Message> actual = Collections.emptyList();// underTest.???(???)
+		final List<Message> actual = underTest.findAllBySender(new User(42, "foo", UserLevel.USER));
 		Assertions.assertThat(actual).hasSize(2);
 		assertThat(actual.get(0).getId()).isEqualTo(1);
 		assertThat(actual.get(1).getId()).isEqualTo(3);
 	}
 
 	@Test
-	@Disabled("TODO")
 	void findsMessageBySenderId() {
-		final List<Message> actual = Collections.emptyList();// underTest.???(???);
+		final List<Message> actual = underTest.findAllBySenderId(42L);
 		Assertions.assertThat(actual).hasSize(2);
 		assertThat(actual.get(0).getId()).isEqualTo(1);
 		assertThat(actual.get(1).getId()).isEqualTo(3);
 	}
 
 	@Test
-	@Disabled("TODO")
 	void findsBySenderName() {
-		final List<Message> actual = Collections.emptyList();// underTest.???(???);
+		final List<Message> actual = underTest.findAllBySenderName("user1");
 		Assertions.assertThat(actual).hasSize(2);
 		assertThat(actual.get(0).getId()).isEqualTo(1);
 		assertThat(actual.get(1).getId()).isEqualTo(3);
 	}
 
 	@Test
-	@Disabled("TODO")
 	void findsBySenderIdAndContent() {
 		jdbcClient.sql("INSERT INTO messages SET id=4, sender_id=42, receiver='to4', content='another three'").update();
-		final List<Message> actual = Collections.emptyList();// underTest.???(???);
+		final List<Message> actual = underTest.findAllBySenderIdAndContentContainsIgnoreCase(42L, "tHrEe");
 		Assertions.assertThat(actual).hasSize(2);
 		assertThat(actual.get(0).getId()).isEqualTo(3);
 		assertThat(actual.get(1).getId()).isEqualTo(4);
 	}
 
 	@Test
-	@Disabled("TODO")
 	void findsCountBySenderId() {
-		final int actual = 0; //underTest.???(???);
+		final int actual = underTest.countBySenderId(42L);
+		assertThat(actual).isEqualTo(2);
+	}	@Test
+
+	void findsCountBySenderIdSql() {
+		final int actual = underTest.countBySenderIdSql(42L);
 		assertThat(actual).isEqualTo(2);
 	}
 
 	@Test
-	@Disabled("TODO")
 	void findsByContent() {
 		jdbcClient.sql("INSERT INTO messages SET id=4, sender_id=42, receiver='to4', content='another three'").update();
-		final List<Message> actual = Collections.emptyList(); // underTest.findWithContentSearch("three");
+		final List<Message> actual = underTest.findWithContentSearch("three");
 		Assertions.assertThat(actual).hasSize(2);
 		assertThat(actual.get(0).getId()).isEqualTo(3);
 		assertThat(actual.get(1).getId()).isEqualTo(4);

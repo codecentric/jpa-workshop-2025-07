@@ -25,7 +25,6 @@ class MessageLoaderJdbcTemplateTest {
 	}
 
 	@Test
-	@Disabled("TODO")
 	void loadsSingleMessage() {
 		template.update("INSERT INTO messages VALUES (1, 'from1', 'to1', 'content1')");
 		final Message loadedMessage = underTest.loadMessage(1);
@@ -33,7 +32,6 @@ class MessageLoaderJdbcTemplateTest {
 	}
 
 	@Test
-	@Disabled("TODO")
 	void loadsAllMessages() {
 		template.update("INSERT INTO messages VALUES (1, 'from1', 'to1', 'content1')");
 		template.update("INSERT INTO messages VALUES (2, '2from', '2to', '2content')");

@@ -15,34 +15,51 @@ public class MessageLoaderWithRelationsJpa {
 	}
 
 	public Message loadMessage(long id) {
-		throw new NotImplementedException("TODO");
+		return entityManager.find(Message.class, id);
 	}
 
 	public List<Message> loadAllMessages() {
-		throw new NotImplementedException("TODO");
+		return entityManager.createQuery("select m from Message m", Message.class).getResultList();
 	}
 
 	List<Message> findAllBySender(User sender) {
-		throw new NotImplementedException("TODO");
+		return findAllBySenderId(sender.getId());
 	}
 
 	List<Message> findAllBySenderId(long id) {
-		throw new NotImplementedException("TODO");
+		return entityManager.createQuery("select m from Message m where m.sender.id = :id", Message.class)
+			.setParameter("id", id)
+			.getResultList();
 	}
 
 	public List<Message> findAllBySenderIdAndContentContains(long senderId, String content) {
-		throw new NotImplementedException("TODO");
+		return entityManager.createQuery("""
+				select m from Message m
+				where m.sender.id = :senderId
+				and m.content like :content
+			""", Message.class)
+			.setParameter("senderId", senderId)
+			.setParameter("content", "%" + content + "%")
+			.getResultList();
 	}
 
 	public List<Message> findAllBySenderName(String senderName) {
-		throw new NotImplementedException("TODO");
+		return entityManager.createQuery("select m from Message m where m.sender.name = :senderName", Message.class)
+			.setParameter("senderName", senderName)
+			.getResultList();
 	}
 
 	public long countMessagesBySenderId(long senderId) {
-		throw new NotImplementedException("TODO");
+		return entityManager
+			.createQuery("select count(m) from Message m where m.sender.id = :id", Long.class)
+			.setParameter("id", senderId)
+			.getSingleResult();
 	}
 
-	public long countMessagesBySenderIdSql(int i) {
-		throw new NotImplementedException("TODO");
+	public long countMessagesBySenderIdSql(long senderId) {
+		return (long) entityManager
+			.createNativeQuery("SELECT count(*) FROM messages WHERE sender_id = ?", Long.class)
+			.setParameter(1, senderId)
+			.getSingleResult();
 	}
 }

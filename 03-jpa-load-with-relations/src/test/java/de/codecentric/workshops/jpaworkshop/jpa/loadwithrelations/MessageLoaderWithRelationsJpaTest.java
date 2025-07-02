@@ -31,7 +31,6 @@ class MessageLoaderWithRelationsJpaTest {
 	}
 
 	@Test
-	@Disabled("TODO")
 	void loadsSingleMessage() {
 		final Message loadedMessage = underTest.loadMessage(1);
 		assertThat(loadedMessage).usingRecursiveComparison()
@@ -39,7 +38,6 @@ class MessageLoaderWithRelationsJpaTest {
 	}
 
 	@Test
-	@Disabled("TODO")
 	void loadsAllMessages() {
 		final List<Message> messages = underTest.loadAllMessages();
 		Assertions.assertThat(messages).hasSize(3);
@@ -52,7 +50,6 @@ class MessageLoaderWithRelationsJpaTest {
 	}
 
 	@Test
-	@Disabled("TODO")
 	void findsMessageBySender() {
 		final List<Message> actual = underTest.findAllBySender(new User(42, "foo", UserLevel.USER));
 		Assertions.assertThat(actual).hasSize(2);
@@ -61,7 +58,6 @@ class MessageLoaderWithRelationsJpaTest {
 	}
 
 	@Test
-	@Disabled("TODO")
 	void findsMessageBySenderId() {
 		final List<Message> actual = underTest.findAllBySenderId(42);
 		Assertions.assertThat(actual).hasSize(2);
@@ -70,7 +66,6 @@ class MessageLoaderWithRelationsJpaTest {
 	}
 
 	@Test
-	@Disabled("TODO")
 	void findsBySenderName() {
 		final List<Message> actual = underTest.findAllBySenderName("user1");
 		Assertions.assertThat(actual).hasSize(2);
@@ -79,7 +74,6 @@ class MessageLoaderWithRelationsJpaTest {
 	}
 
 	@Test
-	@Disabled("TODO")
 	void findsBySenderIdAndContent() {
 		jdbcClient.sql("INSERT INTO messages SET id=4, sender_id=42, receiver='to4', content='another three'").update();
 		final List<Message> actual = underTest.findAllBySenderIdAndContentContains(42, "three");
@@ -89,14 +83,12 @@ class MessageLoaderWithRelationsJpaTest {
 	}
 
 	@Test
-	@Disabled("TODO")
 	void findsCountBySenderId() {
 		final long actual = underTest.countMessagesBySenderId(42);
 		assertThat(actual).isEqualTo(2);
 	}
 
 	@Test
-	@Disabled("TODO")
 	void findsCountBySenderIdSql() {
 		final long actual = underTest.countMessagesBySenderIdSql(42);
 		assertThat(actual).isEqualTo(2);

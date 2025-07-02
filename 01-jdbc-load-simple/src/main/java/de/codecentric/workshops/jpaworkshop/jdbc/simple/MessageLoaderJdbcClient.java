@@ -15,10 +15,10 @@ public class MessageLoaderJdbcClient {
 	}
 
 	public Message loadMessage(long id) {
-		throw new NotImplementedException("TODO");
+		return jdbcClient.sql("SELECT * FROM messages WHERE message_id = ?").param(id).query(Message.class).single();
 	}
 
 	public List<Message> loadAllMessages() {
-		throw new NotImplementedException("TODO");
+		return jdbcClient.sql("SELECT * FROM messages").query(Message.class).list();
 	}
 }
