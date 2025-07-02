@@ -3,6 +3,9 @@ package de.codecentric.workshops.jpaworkshop.jpa.datatypes;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import java.time.Instant;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.Optional;
 import java.util.Random;
@@ -126,7 +129,6 @@ class MessageRepositoryTest {
 	}
 
 	@Test
-	@Disabled("TODO")
 	void ordersByTimestamp() {
 		new Random().longs(10, 0, 100_000_000)
 			.forEach(timestamp -> underTest.save(new Message(user1,
@@ -143,7 +145,6 @@ class MessageRepositoryTest {
 	}
 
 	@Test
-	@Disabled
 	void ordersByCustomSort() {
 		new Random().longs(10, 0, 100_000_000)
 			.forEach(timestamp -> underTest.save(new Message(user1,

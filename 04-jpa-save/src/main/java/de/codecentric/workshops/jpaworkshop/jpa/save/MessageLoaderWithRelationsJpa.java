@@ -5,6 +5,7 @@ import java.util.List;
 import jakarta.persistence.EntityManager;
 import org.apache.commons.lang3.NotImplementedException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class MessageLoaderWithRelationsJpa {
@@ -53,7 +54,9 @@ public class MessageLoaderWithRelationsJpa {
 			.getSingleResult();
 	}
 
+	@Transactional
 	public Message save(Message newMessage) {
-		throw new NotImplementedException();
+		entityManager.persist(newMessage);
+		return newMessage;
 	}
 }

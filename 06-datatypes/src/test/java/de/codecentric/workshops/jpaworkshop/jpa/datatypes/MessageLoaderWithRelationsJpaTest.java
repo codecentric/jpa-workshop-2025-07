@@ -132,7 +132,6 @@ class MessageLoaderWithRelationsJpaTest {
 	}
 
 	@Test
-	@Disabled("TODO")
 	void ordersByTimestamp() {
 		final EntityManager em = emf.createEntityManager();
 		em.getTransaction().begin();
@@ -149,7 +148,6 @@ class MessageLoaderWithRelationsJpaTest {
 	}
 
 	@Test
-	@Disabled("TODO")
 	void ordersByCustomSortWithJPQL() {
 		final EntityManager em = emf.createEntityManager();
 		em.getTransaction().begin();
@@ -166,7 +164,6 @@ class MessageLoaderWithRelationsJpaTest {
 	}
 
 	@Test
-	@Disabled
 	void ordersByCustomSortWithCriteria() {
 		final EntityManager em = emf.createEntityManager();
 		em.getTransaction().begin();

@@ -7,6 +7,7 @@ import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import jakarta.persistence.Transient;
 
 @Entity
 @Table(name = "\"user\"")
@@ -19,6 +20,7 @@ public class User {
 	@Enumerated(EnumType.STRING)
 	private UserLevel level;
 
+	@Transient
 	private Address address;
 
 	public User() {

@@ -1,8 +1,15 @@
 package de.codecentric.workshops.jpaworkshop.jpa.datatypes;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import jakarta.persistence.EntityManager;
+import jakarta.persistence.criteria.CriteriaBuilder;
+import jakarta.persistence.criteria.CriteriaQuery;
+import jakarta.persistence.criteria.Join;
+import jakarta.persistence.criteria.JoinType;
+import jakarta.persistence.criteria.Order;
+import jakarta.persistence.criteria.Root;
 import jakarta.transaction.Transactional;
 import org.apache.commons.lang3.NotImplementedException;
 import org.springframework.data.domain.Sort;
@@ -35,7 +42,8 @@ public class MessageLoaderWithRelationsJpa {
 	}
 
 	public List<Message> findAllBySenderIdAndContentContains(long senderId, String content) {
-		return entityManager.createQuery("SELECT m FROM Message m where sender.id = :id and m.content like :content",
+		return entityManager.createQuery(
+				"SELECT m FROM Message m where sender.id = :id and m.content like :content",
 				Message.class
 			)
 			.setParameter("id", senderId)
@@ -62,14 +70,53 @@ public class MessageLoaderWithRelationsJpa {
 	}
 
 	public List<Message> findAllBySenderIdOrderByTimestamp(Long senderId) {
-		throw new NotImplementedException("TODO");
+		return entityManager.createQuery(
+			"""
+					SELECT m FROM Message m
+					WHERE sender.id = :id
+					order by m.timestamp asc
+				""", Message.class
+		).setParameter("id", senderId).getResultList();
 	}
 
 	public List<Message> findAllBySenderIdJPQL(Long senderId, Sort sort) {
-		throw new NotImplementedException("TODO");
+		final var queryBuilder = new StringBuilder("SELECT m FROM Message m WHERE sender.id = :id ");
+
+		var needComma = false;
+		if (sort.isSorted()) {
+			queryBuilder.append(" ORDER BY ");
+
+			for (Sort.Order order : sort) {
+				if (needComma) {
+					queryBuilder.append(" , ");
+				}
+				queryBuilder.append(order.getProperty()).append(" ").append(order.getDirection().name());
+				needComma = true;
+			}
+		}
+
+		return entityManager.createQuery(queryBuilder.toString()).setParameter("id", senderId).getResultList();
 	}
 
 	public List<Message> findAllBySenderIdCriteria(Long senderId, Sort sort) {
-		throw new NotImplementedException("TODO");
+		final var criteriaBuilder = entityManager.getCriteriaBuilder();
+		final var criteriaQuery = criteriaBuilder.createQuery(Message.class);
+
+		final var m = criteriaQuery.from(Message.class);
+		final var sender = m.join("sender", JoinType.INNER);
+
+		criteriaQuery.select(m).where(criteriaBuilder.equal(sender.get("id"), senderId));
+
+		if (sort.isSorted()) {
+			final var orders = new ArrayList<Order>();
+			for (Sort.Order order : sort) {
+				orders.add(order.isAscending()
+						   ? criteriaBuilder.asc(m.get(order.getProperty()))
+						   : criteriaBuilder.desc(m.get(order.getProperty())));
+			}
+			criteriaQuery.orderBy(orders);
+		}
+
+		return entityManager.createQuery(criteriaQuery).getResultList();
 	}
 }

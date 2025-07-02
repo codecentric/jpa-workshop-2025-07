@@ -40,13 +40,10 @@ class MessageLoaderWithRelationsJpaTest {
 		entityManager.persist(user1);
 		entityManager.persist(user2);
 		msg1 = new Message(user1, "to1", "content one");
-		msg1.setId(1001L);
 		entityManager.persist(msg1);
 		msg2 = new Message(user2, "to2", "content two");
-		msg2.setId(1002L);
 		entityManager.persist(msg2);
 		msg3 = new Message(user1, "to3", "content three");
-		msg3.setId(1003L);
 		entityManager.persist(msg3);
 		entityManager.getTransaction().commit();
 		entityManager.close();
@@ -98,7 +95,6 @@ class MessageLoaderWithRelationsJpaTest {
 	@Test
 	void findsBySenderIdAndContent() {
 		var msg4 = new Message(user1, "to4", "another three");
-		msg4.setId(1004L);
 		final EntityManager em = emf.createEntityManager();
 		em.getTransaction().begin();
 		em.persist(msg4);
@@ -117,10 +113,8 @@ class MessageLoaderWithRelationsJpaTest {
 	}
 
 	@Test
-	@Disabled("TODO")
 	void savesMessage() {
 		final Message newMessage = new Message(user1, "to1", "content_new");
-		newMessage.setId(1005L);
 		final Message savedMessage = underTest.save(newMessage);
 		assertThat(savedMessage).usingRecursiveComparison().isEqualTo(newMessage);
 		assertThat(jdbcClient.sql("SELECT count(*) from messages;").query(int.class).single()).isEqualTo(4);
