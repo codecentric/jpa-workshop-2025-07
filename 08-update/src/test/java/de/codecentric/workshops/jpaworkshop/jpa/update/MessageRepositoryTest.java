@@ -194,14 +194,15 @@ class MessageRepositoryTest {
 		message.setContent("new content");
 		final Message message2 = underTest.findByIdWithTransaction(msg1.getId());
 		assertThat(message2.getContent()).isEqualTo("new content");
+		assertThat(message == message2).isTrue();
 	}
 
 	@Test
 	void detachedObjectsCanBeAttached() {
-		final Message message = underTest.findByIdWithTransaction(msg1.getId());
-		message.setContent("new content");
-		underTest.save(message);
-		final Message message2 = underTest.findByIdWithTransaction(msg1.getId());
-		assertThat(message2.getContent()).isEqualTo("new content");
+		final Message detachedMessage = underTest.findByIdWithTransaction(msg1.getId());
+		detachedMessage.setContent("new content");
+		final var attachedMessage = underTest.save(detachedMessage);
+		final Message loadedLater = underTest.findByIdWithTransaction(msg1.getId());
+		assertThat(loadedLater.getContent()).isEqualTo("new content");
 	}
 }

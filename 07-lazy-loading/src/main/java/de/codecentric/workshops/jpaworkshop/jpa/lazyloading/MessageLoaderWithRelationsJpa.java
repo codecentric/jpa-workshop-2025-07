@@ -112,6 +112,14 @@ public class MessageLoaderWithRelationsJpa {
 
 	@Transactional(TxType.REQUIRES_NEW)
 	public Message findWithFetch(final Long id) {
-		return loadMessage(id);
+		return entityManager.createQuery(
+			"""
+					select m
+					from Message m
+						join fetch m.sender
+						join fetch m.sender.address
+					where m.id = :id
+				""", Message.class
+		).setParameter("id", id).getSingleResult();
 	}
 }

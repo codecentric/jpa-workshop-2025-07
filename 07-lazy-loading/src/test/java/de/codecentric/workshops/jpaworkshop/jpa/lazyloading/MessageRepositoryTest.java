@@ -172,12 +172,11 @@ class MessageRepositoryTest {
 
 		assertThat(sender).isNotNull();
 
-		assertThat(sender.getName()).isNotEmpty();
-//		assertThatThrownBy(() -> sender.getName()).isInstanceOf(LazyInitializationException.class);
+		assertThatThrownBy(() -> sender.getName()).isInstanceOf(LazyInitializationException.class);
 	}
 
 	@Test
-	@Disabled
+	@Transactional
 	void lazyLoadingWhileInSession() {
 		final var loaded = underTest.findById(msg1.getId());
 		assertThat(loaded).isPresent();
@@ -193,8 +192,8 @@ class MessageRepositoryTest {
 
 	@Test
 	void joinFetch() {
-//		final Message loaded = underTest.findWithEntityGraph(msg1.getId());
-//		final User sender = loaded.getSender();
-//		assertThat(sender.getName()).isNotEmpty();
+		final Message loaded = underTest.findWithEntityGraph(msg1.getId());
+		final User sender = loaded.getSender();
+		assertThat(sender.getName()).isNotEmpty();
 	}
 }

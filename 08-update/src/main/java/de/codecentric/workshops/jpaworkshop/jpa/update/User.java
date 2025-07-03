@@ -10,6 +10,7 @@ import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import jakarta.persistence.Version;
 
 @Entity
 @Table(name = "\"user\"")
@@ -24,6 +25,8 @@ public class User {
 	private LocalDate dateOfBirth;
 	@Embedded
 	private Address address;
+	@Version
+	private Long version;
 
 	public User() {
 	}
@@ -64,6 +67,10 @@ public class User {
 
 	public void setLevel(UserLevel level) {
 		this.level = level;
+	}
+
+	public Long getVersion() {
+		return version;
 	}
 
 	public LocalDate getDateOfBirth() {

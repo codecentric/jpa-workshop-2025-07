@@ -3,13 +3,16 @@ package de.codecentric.workshops.jpaworkshop.jpa.lazyloading;
 import java.time.LocalDate;
 
 import jakarta.persistence.AttributeOverride;
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 
 @Entity
@@ -23,7 +26,8 @@ public class User {
 	@Enumerated(EnumType.STRING)
 	private UserLevel level;
 	private LocalDate dateOfBirth;
-	@Embedded
+
+	@ManyToOne(fetch = FetchType.LAZY, cascade = { CascadeType.ALL })
 	private Address address;
 
 	public User() {

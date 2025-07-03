@@ -44,6 +44,6 @@ class UserRepositoryTest {
 		Assertions.assertThat(loaded).isPresent();
 		assertThat(loaded.get().getAddress())
 			.isEqualTo(new Address("strasse", "stadt", Zipcode.of("8161")));
-		assertThat(loaded.get().getAddress().zip()).isInstanceOf(ZipcodeCH.class);
+		assertThat(loaded.get().getAddress().getZip()).isInstanceOf(ZipcodeCH.class);
 	}
 }

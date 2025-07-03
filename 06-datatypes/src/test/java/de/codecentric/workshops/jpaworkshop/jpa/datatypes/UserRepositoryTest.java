@@ -21,7 +21,6 @@ class UserRepositoryTest {
 	EntityManager em;
 
 	@Test
-	@Disabled
 	void savesAndLoadsUserWithAddress() {
 		final User user1 = new User("user1", UserLevel.ADMIN);
 		user1.setAddress(new Address("strasse", "stadt", Zipcode.of("81671")));
@@ -34,7 +33,6 @@ class UserRepositoryTest {
 	}
 
 	@Test
-	@Disabled
 	void savesAndLoadsUserWithSwissAddress() {
 		final User user1 = new User("user1", UserLevel.ADMIN);
 		user1.setAddress(new Address("strasse", "stadt", Zipcode.of("8161")));
